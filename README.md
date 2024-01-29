@@ -14,7 +14,32 @@ Start Mongo Docker container as follows:
 docker run --rm -d -p 27017:27017 --name mongo percona/percona-server-mongodb:5.0
 ```
 
-Start `<SERVICE_MANAGER_PROFILE>` services as follows:
+If you don't have postgres installed locally you can run it in docker using the following command
+
+```bash
+docker run -d --rm --name postgresql -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:10.14
+```
+
+If you are running postgres natively (not in docker) then ensure that the `POSTGRES_USER` and `POSTGRES_PASSWORD` values above, and the `username` and `password` `sm` settings
+below, are set appropriately.
+
+To start services locally, run the following:
+```bash
+sm --start ADDRESS_LOOKUP_SERVICES -r --appendArgs '{
+    "ADDRESS_LOOKUP":[
+        "-J-Dauditing.consumer.baseUri.port=6001",
+        "-J-Dauditing.consumer.baseUri.host=localhost",
+        "-J-Dauditing.enabled=true",
+        "-J-Dcip-address-lookup-rds.enabled=true", 
+        "-J-Dcip-address-lookup-rds.url=jdbc:postgresql://localhost:5432/",
+        "-J-Dcip-address-lookup-rds.username=postgres",
+        "-J-Dcip-address-lookup-rds.password=postgres"
+    ]
+}'
+  ```
+
+NOTE: The db connection parameters for `address-lookup` service - this is to ensure that it connects to the docker container running locally and to the sidecar container when
+running in `jenkins`.
 
 ```bash
 sm2 --start <SERVICE_MANAGER_PROFILE>
