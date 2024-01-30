@@ -16,23 +16,41 @@
 
 package uk.gov.hmrc.ui.specs
 
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.support.ui.WebDriverWait
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.matchers.should.Matchers
-import org.scalatest.{BeforeAndAfterEach, GivenWhenThen}
-import uk.gov.hmrc.selenium.webdriver.{Browser, ScreenshotOnFailure}
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, GivenWhenThen}
+import org.scalatestplus.selenium.WebBrowser
+import uk.gov.hmrc.selenium.webdriver.{Browser, Driver, ScreenshotOnFailure}
+import uk.gov.hmrc.ui.utils.{CommonAssertions, JourneyBuilder, PostgresDB}
+
+import java.time.Duration
 
 trait BaseSpec
     extends AnyFeatureSpec
+    with PostgresDB
     with GivenWhenThen
     with Matchers
     with BeforeAndAfterEach
+    with BeforeAndAfterAll
     with Browser
-    with ScreenshotOnFailure {
+    with WebBrowser
+    with ScreenshotOnFailure
+    with CommonAssertions {
 
-  override def beforeEach(): Unit =
+  lazy val webDriverWillWait: WebDriverWait =
+    new WebDriverWait(webDriver, Duration.ofSeconds(5), Duration.ofMillis(250))
+
+  implicit def webDriver: WebDriver = Driver.instance
+  val journeyBuilder                = new JourneyBuilder
+
+  override def beforeAll(): Unit = {
+    super.beforeAll()
     startBrowser()
+    tx // Initialise DB for tests
+  }
 
-  override def afterEach(): Unit =
+  override def afterAll(): Unit =
     quitBrowser()
-
 }

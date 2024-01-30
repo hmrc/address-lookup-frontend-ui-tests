@@ -16,6 +16,40 @@
 
 package uk.gov.hmrc.ui.pages
 
+import com.typesafe.scalalogging.LazyLogging
+import org.openqa.selenium.{By, WebDriver, WebElement}
+import org.openqa.selenium.interactions.Actions
+import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
+import org.openqa.selenium.support.ui.WebDriverWait
+import org.scalatestplus.selenium.WebBrowser
 import uk.gov.hmrc.selenium.component.PageObject
+import uk.gov.hmrc.selenium.webdriver.Driver
 
-trait BasePage extends PageObject {}
+import java.time.Duration
+
+trait BasePage extends PageObject with WebBrowser with LazyLogging {
+  logger.info(
+    s"Instantiating Browser: ${sys.props.getOrElse("browser", "'browser' System property not set. This is required")}"
+  )
+
+  private lazy val backLink: CssSelectorQuery   = cssSelector(".govuk-back-link")
+  private lazy val pageHeading: Option[Element] = find(id("pageHeading"))
+
+  implicit lazy val webDriver: WebDriver = Driver.instance
+
+  lazy val webDriverWillWait: WebDriverWait =
+    new WebDriverWait(webDriver, Duration.ofSeconds(5), Duration.ofMillis(250))
+  lazy val action: Actions                  = new Actions(webDriver)
+
+  def errorSummaryLink(element: String): WebElement =
+    webDriverWillWait.until(visibilityOfElementLocated(By.cssSelector(s"a[href*='$element']")))
+
+  def errorNotificationField(field: String): WebElement =
+    webDriverWillWait.until(visibilityOfElementLocated(By.id(s"$field-error")))
+
+  def getPageHeading: String =
+    pageHeading.get.text
+
+  def clickBackLink(): Unit =
+    click on backLink
+}
