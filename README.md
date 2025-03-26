@@ -25,7 +25,7 @@ below, are set appropriately.
 
 To start services locally, run the following:
 ```bash
-sm --start ADDRESS_LOOKUP_SERVICES -r --appendArgs '{
+sm2 --start ADDRESS_LOOKUP_SERVICES -r --appendArgs '{
     "ADDRESS_LOOKUP":[
         "-J-Dauditing.consumer.baseUri.port=6001",
         "-J-Dauditing.consumer.baseUri.host=localhost",
@@ -41,13 +41,6 @@ sm --start ADDRESS_LOOKUP_SERVICES -r --appendArgs '{
 NOTE: The db connection parameters for `address-lookup` service - this is to ensure that it connects to the docker container running locally and to the sidecar container when
 running in `jenkins`.
 
-```bash
-sm2 --start <SERVICE_MANAGER_PROFILE>
-```
-
-### Docker Selenium Grid
-
-Confirm that [docker-selenium-grid](https://github.com/hmrc/docker-selenium-grid) is up-to-date and follow the provided [instructions](https://github.com/hmrc/docker-selenium-grid/blob/main/README.md).
 
 ## Tests
 
