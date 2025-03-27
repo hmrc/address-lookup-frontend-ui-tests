@@ -29,7 +29,7 @@ case class CountrySelectorPage() extends BasePage {
   lazy val countryCodeLists: CssSelectorQuery = cssSelector("#countryCode__listbox li")
 
   def isOnPage(ukMode: Boolean = false): Boolean =
-    webDriverWillWait.until(titleIs("Select your country"))
+    webDriverWillWait.until(titleIs("Select your country or territory"))
 
   def selectCountry(country: String): CountrySelectorPage = {
     typeCountryName(country)
