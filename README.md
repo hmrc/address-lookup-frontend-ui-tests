@@ -25,18 +25,20 @@ below, are set appropriately.
 
 To start services locally, run the following:
 ```bash
-sm2 --start ADDRESS_LOOKUP_SERVICES -r --appendArgs '{
+sm2 --start ADDRESS_LOOKUP_SERVICES --appendArgs '{
     "ADDRESS_LOOKUP":[
-        "-J-Dauditing.consumer.baseUri.port=6001",
-        "-J-Dauditing.consumer.baseUri.host=localhost",
-        "-J-Dauditing.enabled=true",
-        "-J-Dcip-address-lookup-rds.enabled=true", 
-        "-J-Dcip-address-lookup-rds.url=jdbc:postgresql://localhost:5432/",
-        "-J-Dcip-address-lookup-rds.username=postgres",
-        "-J-Dcip-address-lookup-rds.password=postgres"
+        "-Dauditing.enabled=false",
+        "-Dmicroservice.services.access-control.enabled=false"
+    ],
+    "ADDRESS_SEARCH_API": [
+        "-Dauditing.enabled=false",
+        "-Dmicroservice.address-search-api.rds.enabled=true",
+        "-Dmicroservice.address-search-api.rds.url=jdbc:postgresql://localhost:5432/",
+        "-Dmicroservice.address-search-api.rds.username=postgres",
+        "-Dmicroservice.address-search-api.rds.password=postgres"
     ]
 }'
-  ```
+```
 
 NOTE: The db connection parameters for `address-lookup` service - this is to ensure that it connects to the docker container running locally and to the sidecar container when
 running in `jenkins`.
