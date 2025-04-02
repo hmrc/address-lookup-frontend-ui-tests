@@ -16,19 +16,22 @@
 
 package uk.gov.hmrc.ui.pages
 
+import uk.gov.hmrc.ui.config.TestConfig
+
 case class TimeoutDialoguePartial() extends BasePage {
 
-  private lazy val timeoutDialogue: IdQuery    = id("hmrc-timeout-dialog")
-  private lazy val staySignedInButton: IdQuery = id("hmrc-timeout-keep-signin-btn")
-  private lazy val signOutLink: IdQuery        = id("hmrc-timeout-sign-out-link")
+  private lazy val timeoutDialogue: IdQuery = id("hmrc-timeout-dialog")
 
   def isVisible: Boolean =
     timeoutDialogue.webElement.isDisplayed
 
   def clickStaySignedIn(): Unit =
-    click on staySignedInButton
+    find(xpath("""//meta[@name='hmrc-timeout-dialog']"""))
+      .flatMap(_.attribute("data-keep-alive-url"))
+      .foreach(keepAliveUrl => go to s"${TestConfig.getHost("address-lookup-frontend")}$keepAliveUrl")
 
   def clickSignOut(): Unit =
-    click on signOutLink
-
+    find(xpath("""//meta[@name='hmrc-timeout-dialog']"""))
+      .flatMap(_.attribute("data-sign-out-url"))
+      .foreach(signOutUrl => go to s"${TestConfig.getHost("address-lookup-frontend")}$signOutUrl")
 }
