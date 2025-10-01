@@ -41,6 +41,13 @@ case class ChooseAddressPage() extends BasePage {
     this
   }
 
+  def selectNoneOfThese(): ChooseAddressPage = {
+    webDriverWillWait
+      .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(s"//*[contains(text(), 'None of these')]")))
+      .click()
+    this
+  }
+
   def clickContinue(): Unit =
     click on continue.get
 

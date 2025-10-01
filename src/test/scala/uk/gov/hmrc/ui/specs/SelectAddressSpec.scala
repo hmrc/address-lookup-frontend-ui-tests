@@ -105,7 +105,7 @@ class SelectAddressSpec extends BaseSpec {
       assertThat(AddressLookUpPage().isOnPage()).isTrue
     }
 
-    Scenario("TXMNT-721 - Select address page, enter address manually, then go back") {
+    Scenario("TXMNT-721 - Select address page, select none of these, then go back") {
       Given("I am on the suggested addresses screen")
       go to journeyBuilder.initializeJourney()
       AddressLookUpPage()
@@ -113,8 +113,9 @@ class SelectAddressSpec extends BaseSpec {
         .clickFindAddress()
       assertThat(ChooseAddressPage().isOnPage()).isTrue
 
-      When("I decide to enter my address manually")
-      ChooseAddressPage().clickEnterAddressManually()
+      When("I choose none of these addresses")
+      ChooseAddressPage().selectNoneOfThese()
+      ChooseAddressPage().clickContinue()
 
       Then("I am taken to the manual address entry page ")
       assertThat(EditAddressPage().isOnPage()).isTrue
