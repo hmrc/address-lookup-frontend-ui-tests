@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-BROWSER=$1
-ENVIRONMENT=$2
+BROWSER=${1:-chrome}
+ENVIRONMENT=${2:-local}
+HEADLESS=${3:-true}
+SPECS=${4:-"uk.gov.hmrc.ui.specs.*"}
 
-sbt clean -Dbrowser="${BROWSER:=chrome}" -Denvironment="${ENVIRONMENT:=local}" test testReport
+sbt clean -Dbrowser=${BROWSER} -Denvironment=${ENVIRONMENT} -Dbrowser.option.headless=${HEADLESS} "testOnly ${SPECS}" testReport
