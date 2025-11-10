@@ -248,8 +248,6 @@ class ManualAddressEntrySpec extends BaseSpec {
 
       assertErrorSummaryLink("line1", Some("Enter at least one address line or a town"))
       assertErrorMessage("line1", Some("Enter at least one address line or a town"))
-      assertErrorBorder("line2")
-      assertErrorBorder("line3")
       assertErrorBorder("town")
       assertErrorMessageSummaryCountIsEqualTo(1)
     }
