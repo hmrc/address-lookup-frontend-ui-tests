@@ -23,21 +23,11 @@ docker run -d --rm --name postgresql -e POSTGRES_USER=postgres -e POSTGRES_PASSW
 If you are running postgres natively (not in docker) then ensure that the `POSTGRES_USER` and `POSTGRES_PASSWORD` values above, and the `username` and `password` `sm` settings
 below, are set appropriately.
 
-To start services locally, run the following:
+**IMPORTANT**
+To start dependent services locally, run the following script:
+
 ```bash
-sm2 --start ADDRESS_LOOKUP_SERVICES --appendArgs '{
-    "ADDRESS_LOOKUP":[
-        "-Dauditing.enabled=false",
-        "-Dmicroservice.services.access-control.enabled=false"
-    ],
-    "ADDRESS_SEARCH_API": [
-        "-Dauditing.enabled=false",
-        "-Dmicroservice.address-search-api.rds.enabled=true",
-        "-Dmicroservice.address-search-api.rds.url=jdbc:postgresql://localhost:5432/",
-        "-Dmicroservice.address-search-api.rds.username=postgres",
-        "-Dmicroservice.address-search-api.rds.password=postgres"
-    ]
-}'
+./start_services.sh
 ```
 
 NOTE: The db connection parameters for `address-lookup` service - this is to ensure that it connects to the docker container running locally and to the sidecar container when
