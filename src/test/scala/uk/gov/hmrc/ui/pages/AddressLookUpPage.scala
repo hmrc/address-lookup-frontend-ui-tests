@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions._
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.support.ui.ExpectedConditions.{elementToBeClickable, visibilityOfElementLocated}
 
 case class AddressLookUpPage() extends BasePage {
 
@@ -27,9 +28,12 @@ case class AddressLookUpPage() extends BasePage {
   private lazy val postcodeField: TextField        = textField(id("postcode"))
   private lazy val findMyAddress: IdQuery          = id("continue")
   private lazy val enterAddressManually: IdQuery   = id("manualAddress")
+  private lazy val postcodeInput: IdQuery          = id("postcode")
 
   def isOnPage(ukMode: Boolean = true): Boolean =
-    webDriverWillWait.until(titleIs(if (ukMode) "Find your UK address" else "Find your address"))
+    webDriverWillWait.until((d: WebDriver) =>
+      java.lang.Boolean.valueOf(d.getTitle == (if (ukMode) "Find your UK address" else "Find your address"))
+    )
 
   def clickFindAddress(): AddressLookUpPage = {
     click on findMyAddress
@@ -42,6 +46,11 @@ case class AddressLookUpPage() extends BasePage {
   }
 
   def enterPostcode(postcode: String): AddressLookUpPage = {
+    webDriverWillWait.until((d: WebDriver) => visibilityOfElementLocated(postcodeInput.by).apply(d) != null)
+    webDriverWillWait.until { (d: WebDriver) =>
+      val clickable = elementToBeClickable(d.findElement(postcodeInput.by)).apply(d)
+      clickable != null
+    }
     postcodeField.value = postcode
     this
   }

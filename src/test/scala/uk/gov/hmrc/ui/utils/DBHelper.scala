@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.ui.utils
 
+import cats.effect.unsafe.implicits.global
 import cats.effect.{IO, Resource}
-import doobie.implicits._
+import doobie.implicits.*
 import doobie.util.fragment.Fragment.const
 import doobie.util.transactor.Transactor
 

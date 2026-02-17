@@ -229,6 +229,9 @@ class ManualAddressEntrySpec extends BaseSpec {
 
       EditAddressPage().clickNext()
 
+      webDriverWillWait.until((_: org.openqa.selenium.WebDriver) =>
+        EditAddressPage().countryFieldValue() == "Bangladesh"
+      )
       assertThat(EditAddressPage().countryFieldValue()).isEqualTo("Bangladesh")
     }
 
