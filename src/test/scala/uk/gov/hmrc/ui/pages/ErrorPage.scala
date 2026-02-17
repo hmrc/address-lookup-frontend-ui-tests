@@ -16,10 +16,12 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.WebDriver
 
 case class ErrorPage() extends BasePage {
 
   def isOnPage(ukMode: Boolean = false): Boolean =
-    webDriverWillWait.until(titleIs("Sorry, there is a problem with the service"))
+    webDriverWillWait.until((d: WebDriver) =>
+      java.lang.Boolean.valueOf(d.getTitle == "Sorry, there is a problem with the service")
+    )
 }
