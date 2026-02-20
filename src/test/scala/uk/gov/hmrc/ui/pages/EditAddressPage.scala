@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.WebDriver
 
 case class EditAddressPage() extends BasePage {
 
@@ -31,7 +31,7 @@ case class EditAddressPage() extends BasePage {
   lazy val postcodeField: TextField         = textField(id("postcode"))
 
   def isOnPage(ukMode: Boolean = false): Boolean =
-    webDriverWillWait.until(titleIs("Enter your address"))
+    webDriverWillWait.until((d: WebDriver) => java.lang.Boolean.valueOf(d.getTitle == "Enter your address"))
 
   def enterOrganisation(organisationName: String): EditAddressPage = {
     organisationNameField.clear()
