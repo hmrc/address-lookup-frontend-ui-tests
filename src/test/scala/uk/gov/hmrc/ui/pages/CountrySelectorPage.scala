@@ -16,8 +16,7 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.Keys
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.{Keys, WebDriver}
 
 case class CountrySelectorPage() extends BasePage {
 
@@ -29,7 +28,9 @@ case class CountrySelectorPage() extends BasePage {
   lazy val countryCodeLists: CssSelectorQuery = cssSelector("#countryCode__listbox li")
 
   def isOnPage(ukMode: Boolean = false): Boolean =
-    webDriverWillWait.until(titleIs("Select your country or territory"))
+    webDriverWillWait.until((d: WebDriver) =>
+      java.lang.Boolean.valueOf(d.getTitle == "Select your country or territory")
+    )
 
   def selectCountry(country: String): CountrySelectorPage = {
     typeCountryName(country)

@@ -17,9 +17,9 @@
 package uk.gov.hmrc.ui.utils
 
 import akka.actor.ActorSystem
-import play.api.libs.ws.DefaultBodyWritables._
+import play.api.libs.ws.DefaultBodyWritables.*
 import play.api.libs.ws.ahc.{AhcWSClientConfig, StandaloneAhcWSClient}
-import play.api.libs.ws.{StandaloneWSRequest, WSClientConfig}
+import play.api.libs.ws.{StandaloneWSRequest, StandaloneWSResponse, WSClientConfig}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.reflectiveCalls
@@ -33,19 +33,19 @@ trait HttpClient {
 
   implicit val ec: ExecutionContext = ExecutionContext.global
 
-  def get(url: String, headers: (String, String)*): Future[StandaloneWSRequest#Self#Response] =
+  def get(url: String, headers: (String, String)*): Future[StandaloneWSResponse] =
     wsClient
       .url(url)
       .withHttpHeaders(headers: _*)
       .get()
 
-  def post(url: String, bodyAsJson: String, headers: (String, String)*): Future[StandaloneWSRequest#Self#Response] =
+  def post(url: String, bodyAsJson: String, headers: (String, String)*): Future[StandaloneWSResponse] =
     wsClient
       .url(url)
       .withHttpHeaders(headers: _*)
       .post(bodyAsJson)
 
-  def delete(url: String, headers: (String, String)*): Future[StandaloneWSRequest#Self#Response] =
+  def delete(url: String, headers: (String, String)*): Future[StandaloneWSResponse] =
     wsClient
       .url(url)
       .withHttpHeaders(headers: _*)
