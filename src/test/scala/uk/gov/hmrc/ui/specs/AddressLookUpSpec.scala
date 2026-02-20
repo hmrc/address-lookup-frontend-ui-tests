@@ -154,7 +154,12 @@ class AddressLookUpSpec extends BaseSpec {
         .clickFindAddress()
 
       Then("I am presented with a message stating there are no search results")
-      AddressNotFoundPage().getPageHeading should be(AddressNotFoundPage().constructPostcodeErrorMessageWith(postcode))
+      webDriverWillWait
+        .until(
+          org.openqa.selenium.support.ui.ExpectedConditions
+            .visibilityOfElementLocated(org.openqa.selenium.By.id("pageHeading"))
+        )
+        .getText should be(AddressNotFoundPage().constructPostcodeErrorMessageWith(postcode))
     }
 
     Scenario("Address search - Invalid postcode") {
@@ -195,7 +200,17 @@ class AddressLookUpSpec extends BaseSpec {
         .clickFindAddress()
 
       Then("I am presented with a message stating there are too many/more than the configured search results limit")
-      AddressLookUpPage().getPageHeading should be(AddressLookUpPage().tooManyAddressesFoundForPostcodeMessage)
+      webDriverWillWait.until(
+        org.openqa.selenium.support.ui.ExpectedConditions.textToBe(
+          org.openqa.selenium.By.id("pageHeading"),
+          AddressLookUpPage().tooManyAddressesFoundForPostcodeMessage
+        )
+      )
+      org.openqa.selenium.support.ui.ExpectedConditions
+        .visibilityOfElementLocated(org.openqa.selenium.By.id("pageHeading"))
+        .apply(webDriver)
+        .getText should be(AddressLookUpPage().tooManyAddressesFoundForPostcodeMessage)
+
     }
 
     Scenario("Manual Address Entry") {

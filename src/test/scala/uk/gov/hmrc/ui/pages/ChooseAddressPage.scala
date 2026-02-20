@@ -16,20 +16,17 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.{By, WebDriver}
 
 case class ChooseAddressPage() extends BasePage {
-
-  private lazy val continue: Option[Element] = find(id("continue"))
 
   lazy val enterAddressManually: IdQuery             = id("editAddress")
   lazy val addressNotSelectedError: CssSelectorQuery = cssSelector(".govuk-error-summary__list a")
   lazy val firstAddress: IdQuery                     = id("addressId")
 
   def isOnPage(ukMode: Boolean = false): Boolean =
-    webDriverWillWait.until(titleIs("Choose your address"))
+    webDriverWillWait.until((d: WebDriver) => java.lang.Boolean.valueOf(d.getTitle == "Choose your address"))
 
   def getAddressesCount(postcode: String): Int =
     findAll(xpath(s"//*[contains(text(), '$postcode')]")).size
@@ -49,7 +46,7 @@ case class ChooseAddressPage() extends BasePage {
   }
 
   def clickContinue(): Unit =
-    click on continue.get
+    clickContinueButton()
 
   def clickEnterAddressManually(): Unit =
     click on enterAddressManually

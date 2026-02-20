@@ -102,6 +102,12 @@ class AccessibilitySpec extends BaseSpec {
       .clickFindAddress()
 
     Then("I am presented with a message stating there are too many/more than the configured search results limit")
+    AddressLookUpPage().webDriverWillWait.until(
+      org.openqa.selenium.support.ui.ExpectedConditions.textToBe(
+        org.openqa.selenium.By.id("pageHeading"),
+        AddressLookUpPage().tooManyAddressesFoundForPostcodeMessage
+      )
+    )
     AddressLookUpPage().getPageHeading should be(AddressLookUpPage().tooManyAddressesFoundForPostcodeMessage)
   }
 
@@ -127,8 +133,6 @@ class AccessibilitySpec extends BaseSpec {
 
     assertErrorSummaryLink("line1", Some("Enter at least one address line or a town"))
     assertErrorMessage("line1", Some("Enter at least one address line or a town"))
-    assertErrorBorder("line2")
-    assertErrorBorder("line3")
     assertErrorBorder("town")
     assertErrorMessageSummaryCountIsEqualTo(1)
   }

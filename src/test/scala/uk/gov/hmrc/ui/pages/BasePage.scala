@@ -19,6 +19,7 @@ package uk.gov.hmrc.ui.pages
 import com.typesafe.scalalogging.LazyLogging
 import org.openqa.selenium.{By, WebDriver, WebElement}
 import org.openqa.selenium.interactions.Actions
+import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
 import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 import org.openqa.selenium.support.ui.WebDriverWait
 import org.scalatestplus.selenium.WebBrowser
@@ -32,7 +33,6 @@ trait BasePage extends PageObject with WebBrowser with LazyLogging {
     s"Instantiating Browser: ${sys.props.getOrElse("browser", "'browser' System property not set. This is required")}"
   )
 
-  private lazy val backLink: CssSelectorQuery   = cssSelector(".govuk-back-link")
   private lazy val pageHeading: Option[Element] = find(id("pageHeading"))
 
   implicit lazy val webDriver: WebDriver = Driver.instance
@@ -48,8 +48,31 @@ trait BasePage extends PageObject with WebBrowser with LazyLogging {
     webDriverWillWait.until(visibilityOfElementLocated(By.id(s"$field-error")))
 
   def getPageHeading: String =
-    pageHeading.get.text
+    webDriverWillWait.until(visibilityOfElementLocated(By.id("pageHeading"))).getText
 
-  def clickBackLink(): Unit =
-    click on backLink
+  def clickBackLink(): Unit                                                    =
+    webDriverWillWait.until(visibilityOfElementLocated(By.cssSelector(".govuk-back-link"))).click()
+  protected def clickWhenClickable(locator: By, retriesOnStale: Int = 1): Unit = {
+    var attemptsLeft         = retriesOnStale + 1
+    var lastError: Throwable = null
+
+    while (attemptsLeft > 0)
+      try {
+        webDriverWillWait.until { (d: WebDriver) =>
+          val clickable = elementToBeClickable(d.findElement(locator)).apply(d)
+          clickable != null
+        }
+        webDriver.findElement(locator).click()
+        return
+      } catch {
+        case e: org.openqa.selenium.StaleElementReferenceException =>
+          lastError = e
+          attemptsLeft -= 1
+          if (attemptsLeft == 0) throw e
+      }
+    throw new RuntimeException("Unable to click element", lastError)
+  }
+
+  protected def clickContinueButton(): Unit =
+    clickWhenClickable(By.id("continue"))
 }

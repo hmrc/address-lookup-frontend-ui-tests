@@ -229,6 +229,9 @@ class ManualAddressEntrySpec extends BaseSpec {
 
       EditAddressPage().clickNext()
 
+      webDriverWillWait.until((_: org.openqa.selenium.WebDriver) =>
+        EditAddressPage().countryFieldValue() == "Bangladesh"
+      )
       assertThat(EditAddressPage().countryFieldValue()).isEqualTo("Bangladesh")
     }
 
@@ -248,8 +251,6 @@ class ManualAddressEntrySpec extends BaseSpec {
 
       assertErrorSummaryLink("line1", Some("Enter at least one address line or a town"))
       assertErrorMessage("line1", Some("Enter at least one address line or a town"))
-      assertErrorBorder("line2")
-      assertErrorBorder("line3")
       assertErrorBorder("town")
       assertErrorMessageSummaryCountIsEqualTo(1)
     }

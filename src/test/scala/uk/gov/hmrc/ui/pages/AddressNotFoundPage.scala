@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions.titleContains
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.support.ui.ExpectedConditions.{elementToBeClickable, titleContains}
 
 case class AddressNotFoundPage() extends BasePage {
 
@@ -26,13 +27,18 @@ case class AddressNotFoundPage() extends BasePage {
   private lazy val tryDifferentPostcodeButton: IdQuery = id("continue")
 
   def isOnPage(ukMode: Boolean = false): Boolean =
-    webDriverWillWait.until(titleContains("We cannot find any addresses"))
+    webDriverWillWait.until((d: WebDriver) => titleContains("We cannot find any addresses").apply(d).booleanValue())
 
   def tryADifferentPostcode(): Unit =
     click on tryDifferentPostcodeButton
 
-  def enterAddressManually(): Unit =
+  def enterAddressManually(): Unit = {
+    webDriverWillWait.until { (d: WebDriver) =>
+      val clickable = elementToBeClickable(d.findElement(enterAddressManuallyLink.by)).apply(d)
+      clickable != null
+    }
     click on enterAddressManuallyLink
+  }
 
   def constructPostcodeErrorMessageWith(postCode: String): String =
     s"$postcodeErrorMessagePrefix $postCode"

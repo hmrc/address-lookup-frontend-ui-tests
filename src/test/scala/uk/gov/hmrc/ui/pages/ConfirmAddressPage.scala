@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
 
 case class ConfirmAddressPage() extends BasePage {
 
@@ -29,11 +30,16 @@ case class ConfirmAddressPage() extends BasePage {
   lazy val CountryField: String        = find(id("country")).get.text
 
   def isOnPage(ukMode: Boolean = false): Boolean =
-    webDriverWillWait.until(titleIs("Review and confirm"))
+    webDriverWillWait.until((d: WebDriver) => java.lang.Boolean.valueOf(d.getTitle == "Review and confirm"))
 
   def confirmAddress(): Unit =
     click on confirmButton
 
-  def changeAddress(): Unit =
+  def changeAddress(): Unit = {
+    webDriverWillWait.until { (d: WebDriver) =>
+      val clickable = elementToBeClickable(d.findElement(changeAddressLink.by)).apply(d)
+      clickable != null
+    }
     click on changeAddressLink
+  }
 }
