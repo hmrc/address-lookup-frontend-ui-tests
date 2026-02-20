@@ -50,7 +50,7 @@ trait BasePage extends PageObject with WebBrowser with LazyLogging {
   def getPageHeading: String =
     webDriverWillWait.until(visibilityOfElementLocated(By.id("pageHeading"))).getText
 
-  def clickBackLink(): Unit =
+  def clickBackLink(): Unit                                                    =
     webDriverWillWait.until(visibilityOfElementLocated(By.cssSelector(".govuk-back-link"))).click()
   protected def clickWhenClickable(locator: By, retriesOnStale: Int = 1): Unit = {
     var attemptsLeft         = retriesOnStale + 1
