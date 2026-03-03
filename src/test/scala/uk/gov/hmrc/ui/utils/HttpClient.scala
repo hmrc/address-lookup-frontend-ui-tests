@@ -19,7 +19,7 @@ package uk.gov.hmrc.ui.utils
 import akka.actor.ActorSystem
 import play.api.libs.ws.DefaultBodyWritables.*
 import play.api.libs.ws.ahc.{AhcWSClientConfig, StandaloneAhcWSClient}
-import play.api.libs.ws.{StandaloneWSRequest, StandaloneWSResponse, WSClientConfig}
+import play.api.libs.ws.{StandaloneWSResponse, WSClientConfig}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.reflectiveCalls

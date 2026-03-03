@@ -20,7 +20,7 @@ import org.openqa.selenium.WebDriver
 
 case class ErrorPage() extends BasePage {
 
-  def isOnPage(ukMode: Boolean = false): Boolean =
+  def isOnPage(): Boolean =
     webDriverWillWait.until((d: WebDriver) =>
       java.lang.Boolean.valueOf(d.getTitle == "Sorry, there is a problem with the service")
     )

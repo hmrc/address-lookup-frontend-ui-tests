@@ -27,7 +27,7 @@ case class CountrySelectorPage() extends BasePage {
   lazy val countryAutoCompleteField: IdQuery  = id("countryCode__option--0")
   lazy val countryCodeLists: CssSelectorQuery = cssSelector("#countryCode__listbox li")
 
-  def isOnPage(ukMode: Boolean = false): Boolean =
+  def isOnPage(): Boolean =
     webDriverWillWait.until((d: WebDriver) =>
       java.lang.Boolean.valueOf(d.getTitle == "Select your country or territory")
     )

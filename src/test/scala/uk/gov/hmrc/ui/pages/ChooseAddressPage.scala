@@ -27,7 +27,7 @@ case class ChooseAddressPage() extends BasePage {
   lazy val addressNotSelectedError: CssSelectorQuery = cssSelector(".govuk-error-summary__list a")
   lazy val firstAddress: IdQuery                     = id("addressId")
 
-  def isOnPage(ukMode: Boolean = false): Boolean =
+  def isOnPage(): Boolean =
     webDriverWillWait.until((d: WebDriver) => java.lang.Boolean.valueOf(d.getTitle == "Choose your address"))
 
   def getAddressesCount(postcode: String): Int =

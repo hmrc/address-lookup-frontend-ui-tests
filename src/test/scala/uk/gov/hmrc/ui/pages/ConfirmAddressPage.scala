@@ -28,7 +28,7 @@ case class ConfirmAddressPage() extends BasePage {
   lazy val postCodeField: String       = find(id("postCode")).get.text
   lazy val CountryField: String        = find(id("country")).get.text
 
-  def isOnPage(ukMode: Boolean = false): Boolean =
+  def isOnPage(): Boolean =
     webDriverWillWait.until((d: WebDriver) => java.lang.Boolean.valueOf(d.getTitle == "Review and confirm"))
 
   def confirmAddress(): Unit =

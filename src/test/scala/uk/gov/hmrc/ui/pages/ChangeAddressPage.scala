@@ -20,6 +20,6 @@ import org.openqa.selenium.WebDriver
 
 case class ChangeAddressPage() extends BasePage {
 
-  def isOnPage(ukMode: Boolean = false): Boolean =
+  def isOnPage(): Boolean =
     webDriverWillWait.until((d: WebDriver) => java.lang.Boolean.valueOf(d.getTitle == "Enter your address"))
 }

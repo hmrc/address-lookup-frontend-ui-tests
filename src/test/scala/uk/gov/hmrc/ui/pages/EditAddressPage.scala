@@ -30,7 +30,7 @@ case class EditAddressPage() extends BasePage {
   lazy val townField: TextField             = textField(id("town"))
   lazy val postcodeField: TextField         = textField(id("postcode"))
 
-  def isOnPage(ukMode: Boolean = false): Boolean =
+  def isOnPage(): Boolean =
     webDriverWillWait.until((d: WebDriver) => java.lang.Boolean.valueOf(d.getTitle == "Enter your address"))
 
   def enterOrganisation(organisationName: String): EditAddressPage = {
