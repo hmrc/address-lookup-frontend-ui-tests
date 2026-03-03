@@ -11,7 +11,7 @@ object Dependencies {
     "org.scalatestplus"      %% "selenium-4-21"          % "3.2.19.0"    % Test,
     "org.slf4j"               % "slf4j-simple"           % "2.0.17"      % Test,
     "com.typesafe.play"      %% "play-ahc-ws-standalone" % "2.2.14"      % Test,
-    "uk.gov.hmrc"            %% "ui-test-runner"         % "0.46.0"      % Test,
+    "uk.gov.hmrc"            %% "ui-test-runner"         % "0.52.0"      % Test,
     "org.tpolecat"           %% "doobie-core"            % doobieVersion % Test,
     "org.tpolecat"           %% "doobie-postgres"        % doobieVersion % Test,
     "org.tpolecat"           %% "doobie-scalatest"       % doobieVersion % Test,
