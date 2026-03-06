@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.ui.models.init
 
-import play.api.libs.functional.syntax.{unlift, _}
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.Reads.min
-import play.api.libs.json.{Format, JsPath}
+import play.api.libs.json.{OFormat, __}
 
 case class TimeoutConfig(timeoutAmount: Int, timeoutUrl: String, timeoutKeepAliveUrl: Option[String] = None)
 
 object TimeoutConfig {
-  implicit val timeoutFormat: Format[TimeoutConfig] = (
-    (JsPath \ "timeoutAmount").format[Int](min(120)) and
-      (JsPath \ "timeoutUrl").format[String] and
-      (JsPath \ "timeoutKeepAliveUrl").formatNullable[String]
-  )(TimeoutConfig.apply, unlift(TimeoutConfig.unapply))
+  implicit val timeoutFormat: OFormat[TimeoutConfig] = (
+    (__ \ "timeoutAmount").format[Int](min(120)) and
+      (__ \ "timeoutUrl").format[String] and
+      (__ \ "timeoutKeepAliveUrl").formatNullable[String]
+  )(TimeoutConfig.apply, tc => (tc.timeoutAmount, tc.timeoutUrl, tc.timeoutKeepAliveUrl))
 }

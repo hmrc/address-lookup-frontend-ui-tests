@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions._
+import org.openqa.selenium.WebDriver
 
 case class AddressLookUpPage() extends BasePage {
 
@@ -29,7 +29,9 @@ case class AddressLookUpPage() extends BasePage {
   private lazy val enterAddressManually: IdQuery   = id("manualAddress")
 
   def isOnPage(ukMode: Boolean = true): Boolean =
-    webDriverWillWait.until(titleIs(if (ukMode) "Find your UK address" else "Find your address"))
+    webDriverWillWait.until((d: WebDriver) =>
+      java.lang.Boolean.valueOf(d.getTitle == (if (ukMode) "Find your UK address" else "Find your address"))
+    )
 
   def clickFindAddress(): AddressLookUpPage = {
     click on findMyAddress

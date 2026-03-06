@@ -16,23 +16,19 @@
 
 package uk.gov.hmrc.ui.utils
 
-import cats.effect.{ContextShift, IO, Timer}
+import cats.effect.IO
+import cats.effect.unsafe.implicits.global
 import doobie.Transactor
-import doobie.implicits._
+import doobie.implicits.*
 import doobie.postgres.{PFCM, PHC}
-
-import uk.gov.hmrc.ui.utils.DBHelper._
+import uk.gov.hmrc.ui.utils.DBHelper.*
 
 import java.io.File
 import java.net.URI
 import java.nio.file.{Files, StandardOpenOption}
 import java.util.UUID
-import scala.concurrent.ExecutionContext.Implicits.global
 
 trait PostgresDB {
-
-  implicit val cs: ContextShift[IO] = IO.contextShift(global)
-  implicit val timer: Timer[IO]     = IO.timer(global)
 
   protected lazy val tx: Transactor[IO] = {
     println(s""">>> schemaName: $schemaName""")
@@ -108,11 +104,14 @@ trait PostgresDB {
 
   private def createTransactorWith(jdbcUrl: String, username: String, password: String): IO[Transactor[IO]] =
     IO {
+      val props = new java.util.Properties()
+      props.setProperty("user", username)
+      props.setProperty("password", password)
       Transactor.fromDriverManager[IO](
-        driver = "org.postgresql.Driver",
-        url = jdbcUrl,
-        user = username,
-        pass = password
+        "org.postgresql.Driver",
+        jdbcUrl,
+        props,
+        None
       )
     }
 

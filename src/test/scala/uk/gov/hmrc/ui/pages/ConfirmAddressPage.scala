@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.WebDriver
 
 case class ConfirmAddressPage() extends BasePage {
 
@@ -28,8 +28,8 @@ case class ConfirmAddressPage() extends BasePage {
   lazy val postCodeField: String       = find(id("postCode")).get.text
   lazy val CountryField: String        = find(id("country")).get.text
 
-  def isOnPage(ukMode: Boolean = false): Boolean =
-    webDriverWillWait.until(titleIs("Review and confirm"))
+  def isOnPage(): Boolean =
+    webDriverWillWait.until((d: WebDriver) => java.lang.Boolean.valueOf(d.getTitle == "Review and confirm"))
 
   def confirmAddress(): Unit =
     click on confirmButton
