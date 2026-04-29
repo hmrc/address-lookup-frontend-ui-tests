@@ -266,8 +266,8 @@ class ManualAddressEntrySpec extends BaseSpec {
 
       Then("I should see field level error messages as well as a clickable 'Error Summary' at the top of the page")
       checkErrorMessages(
-        lineOneError = Some("The first address line needs to be fewer than 256 characters"),
-        townError = Some("The town or city needs to be fewer than 256 characters"),
+        lineOneError = Some("Address line 1 needs to be 255 characters or less"),
+        townError = Some("Town or city needs to be 255 characters or less"),
         postCodeError = Some("Enter a valid postcode")
       )
       assertErrorMessageSummaryCountIsEqualTo(3)
